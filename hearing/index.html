@@ -3,6 +3,19 @@
 <head>
     <link rel="stylesheet" type="text/css" href="basic.css">
     <title>Tony's Hearing</title>
+    <style>
+        audio::-internal-media-controls-download-button {
+            display: none;
+        }
+
+        audio::-webkit-media-controls-enclosure {
+            overflow: hidden;
+        }
+
+        audio::-webkit-media-controls-panel {
+            width: calc(100% + 33px);
+        }
+    </style>
 </head>
 <body>
     <h1>Tony's Hearing</h1>
