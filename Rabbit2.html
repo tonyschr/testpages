@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Rabbit</title>
+</head>
+<body>
+
+<script>
+    var rabbitNumber = 1;
+    var lastRabbit = null;
+
+    function print(string) {
+        console.log(string);
+        document.getElementById("output").value += string;
+        document.getElementById("output").value += "\n";
+    }
+
+    class Rabbit {
+        constructor(name) {
+            print("Created rabbit: " + name)
+            this.name = name;
+        }
+
+        eat() {
+            print("" + this.name + ": Nom nom nom...")
+        }
+
+        jump() {
+            print("" + this.name + ": Boing!")
+        }
+    }
+
+    function makeNewRabbit() {
+        lastRabbit = new Rabbit("Bugs B #" + rabbitNumber++);
+    }
+
+    function askRabbitToJump() {
+        if (lastRabbit != null) {
+            lastRabbit.jump();
+        }
+        else {
+            print("Error: We don't have a rabbit yet!")
+        }
+    }
+</script>
+
+<button onclick="makeNewRabbit();">New Rabbit</button>
+<button onclick="askRabbitToJump();">Ask Rabbit to jump</button>
+
+<textarea id="output" style="display: block; width: 800px; height: 400px;"></textarea>
+</body>
+</html>
