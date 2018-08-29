@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<title>Tab Sets Stress</title>
+<script>
+
+function getRandom(max) {
+    return Math.floor((Math.random() * max));
+}
+
+var popupWindowNames = [ "tsMany1", "tsMany2", "tsMany3", "tsMany4", "tsMany5" ];
+var popupWindows = [];
+var locations = [ "http://tonyschr-server/", "http://tonyschr-server/", "http://tonyschr-server/", "http://tonyschr-server/windows/openanother.html" ];
+var features = [ "", "menubar=no,location=no,resizable=no,scrollbars=no,status=no'"];
+
+function closeRandomPopup(timeout) {
+    if (popupWindows.length > 0)
+    {
+        var index = getRandom(popupWindows.length);
+        var win = popupWindows[index];
+        win.close();
+        popupWindows.splice(index, 1);
+    }
+    
+    setTimeout(function() { closeRandomPopup(); }, getRandom(timeout));
+}
+
+function openRandomPopupType(timeout) {
+    try {
+        var win = window.open(locations[getRandom(locations.length)], popupWindowNames[getRandom(popupWindowNames.length)], features[getRandom(features.length)]);
+        popupWindows.push(win);
+        setTimeout(function() { openRandomPopupType(); }, getRandom(timeout));
+    } catch (e) {
+        console.log("openRandomPopupType: " + e);
+    }        
+}
+
+function windowOpenAndCloseMany() {
+    setTimeout(function() { openRandomPopupType(2000); }, getRandom(2000))
+        
+    setTimeout(function() { closeRandomPopup(3000); }, getRandom(3000));
+}
+
+</script>
+</head>
+<body onload="windowOpenAndCloseMany();">
+
+Testing windows and tabs opening and closing.
+
+</body>
+</html>

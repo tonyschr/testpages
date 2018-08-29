@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<title>Tab Sets Stress</title>
+<script>
+
+function getRandom(max) {
+    return Math.floor((Math.random() * max));
+}
+
+function getRandomRange(min, max) {
+    var value = getRandom(max);
+    if (value < min) {
+        // We don't care about adjusting the distribution
+        value = min;
+    }
+
+    return value;
+}
+
+var popupWindowNames = [ "tsMany1", "tsMany2", "tsMany3", "tsMany4", "tsMany5", "tsMany6", "tsMany7", "tsMany8", "tsMany9", "tsMany10", "tsMany11", "tsMany12", "tsMany13", "tsMany14", "tsMany15", "tsMany16", "tsMany17", "tsMany18", "tsMany19", "tsMany20" ];
+var popupWindows = [];
+var locations = [ "http://tonyschr-server/", "http://tonyschr-server/", "http://tonyschr-server/", "http://tonyschr-server/windows/openanother.html" ];
+var features = [ "", "menubar=no,location=no,resizable=no,scrollbars=no,status=no'"];
+var iterations = 5;
+
+var openTimeoutMin = 30000;
+var openTimeoutMax = 30000;
+var closeTimeoutMin = 30000;
+var closeTimeoutMax = 30000;
+
+function closeRandomPopup() {
+    try {
+        if (popupWindows.length > 0)
+        {
+            var index = getRandom(popupWindows.length);
+            var win = popupWindows[index];
+            win.close();
+            popupWindows.splice(index, 1);
+        }
+        
+        if (iterations > 0) {
+            setTimeout(function() { closeRandomPopup(); }, getRandomRange(closeTimeoutMin, closeTimeoutMax));
+        }
+    } catch (e) {
+        console.log("openRandomPopupType: " + e);
+    } 
+}
+
+function openRandomPopupType() {
+    try {
+        var win = window.open(locations[getRandom(locations.length)], popupWindowNames[getRandom(popupWindowNames.length)], features[getRandom(features.length)]);
+        popupWindows.push(win);
+
+        if (iterations-- > 0) {
+            setTimeout(function() { openRandomPopupType(); }, getRandomRange(openTimeoutMin, openTimeoutMax))
+        }
+        
+    } catch (e) {
+        console.log("openRandomPopupType: " + e);
+    } 
+}
+
+function stopAll() {
+    iterations = 0;
+}
+
+function windowOpenAndCloseMany() {
+    openTimeoutMin = document.getElementById("openTimeoutMin").value;
+    openTimeoutMax = document.getElementById("openTimeoutMax").value;
+    closeTimeoutMin = document.getElementById("closeTimeoutMin").value;
+    closeTimeoutMax = document.getElementById("closeTimeoutMax").value;
+    iterations = document.getElementById("iterations").value;
+
+    setTimeout(function() { openRandomPopupType(); }, getRandomRange(openTimeoutMin, openTimeoutMax))
+        
+    setTimeout(function() { closeRandomPopup(); }, getRandomRange(closeTimeoutMin, closeTimeoutMax));
+}
+
+</script>
+</head>
+<body>
+
+<p>
+<b>Open timeout</b><br>
+Min: <input type="text" id="openTimeoutMin" value="300"></input> Max: <input type="text" id="openTimeoutMax" value="2500"></input><br>
+<b>Close timeout</b><br>
+Min: <input type="text" id="closeTimeoutMin" value="300"></input> Max: <input type="text" id="closeTimeoutMax" value="3000"></input><br>
+<b>Iterations</b><br>
+<input type="text" id="iterations" value="5000"></input><br><br>
+<button onclick="windowOpenAndCloseMany()">Open and close and a variety of named windows</button>
+<button onclick="stopAll();">Stop</button>
+</p>
+
+<p>
+Windows are all named windows, with a maximum of 5.
+</body>
+</html>
