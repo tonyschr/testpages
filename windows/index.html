@@ -74,6 +74,14 @@ function windowOpenAndCloseMany() {
     setTimeout(function() { closeRandomPopup(3000); }, getRandom(3000));
 }
 
+function testModelessDialog() {
+    window.showModelessDialog("http://tonyschr-serv");
+}
+
+function testModalDialog() {
+    window.showModalDialog("http://tonyschr-serv");
+}
+
 </script>
 </head>
 <body>
@@ -97,6 +105,10 @@ function windowOpenAndCloseMany() {
 <h2>Basic dialogs</h2>
 <button onclick="testAlert(0);">Alert</button> | <button onclick="testAlert(4000);">Alert 4 Sec Delay</button>
 <button onclick="testPrompt(0);">Prompt</button> | <button onclick="testPrompt(4000);">Prompt 4 Sec Delay</button>
+
+<h2>HTML dialogs</h2>
+<button onclick="testModalDialog();">showModalDialog</button>
+<button onclick="testModelessDialog();">showModelessDialog</button>
 
 <h2>Misc</h2>
 <a href="sets_stress.html">Tab Sets Stress</a><br>
