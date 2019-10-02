@@ -13,12 +13,12 @@ def add_arch(x, y, z):
     bpy.context.object.rigid_body.mass = 0.0001
 
     bpy.context.object.scale = [10, 1, 1]
-    bpy.ops.mesh.primitive_cube_add(size=beam_thickness, location=(x - 10, y, z + 7))
+    bpy.ops.mesh.primitive_cube_add(size=beam_thickness, location=(x - 10, y, z + height / 2))
     bpy.ops.rigidbody.object_add()        
     bpy.context.object.rigid_body.mass = 0.0001
 
     bpy.context.object.scale = [1, 1, height / 2]
-    bpy.ops.mesh.primitive_cube_add(size=beam_thickness, location=(x + 10, y, z + 7))
+    bpy.ops.mesh.primitive_cube_add(size=beam_thickness, location=(x + 10, y, z + height / 2))
     bpy.ops.rigidbody.object_add()        
     bpy.context.object.rigid_body.mass = 0.0001
     bpy.context.object.scale = [1, 1, height / 2]
