@@ -51,6 +51,20 @@
         };
     }
 
+    function shuffle(array) {
+        let counter = array.length;
+        
+        while (counter > 0) {
+            let index = Math.floor(Math.random() * counter);
+            counter--;
+            let temp = array[counter];
+            array[counter] = array[index];
+            array[index] = temp;
+        }
+    
+        return array;
+    }
+    
     // Reads a list of words from a plain text file, one word per line.
     function readWordList(evt) {
         var file = evt.target.files[0];
@@ -65,7 +79,9 @@
 
                 // Filter out any blank lines, which is likely at least at the end
                 // of the file.
-                g_words = words.filter(function (value, index, arr) { return value.trim().length > 0; });
+                filteredWords = words.filter(function (value, index, arr) { return value.trim().length > 0; });
+
+                g_words = shuffle(filteredWords);
 
                 if (g_words.length > 0) {
                     goToWord(0);
