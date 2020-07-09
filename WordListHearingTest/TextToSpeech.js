@@ -5,14 +5,16 @@ var g_selectedRate = 0.8;
 function populateVoices(id) {
   voicesElement = document.getElementById(id);
 
-  var allVoices = speechSynthesis.getVoices();
+  if (voicesElement.options.length == 0) {
+    var allVoices = speechSynthesis.getVoices();
 
-  var englishVoices = allVoices.filter(function(value, index, arr){ return value.name.includes("English"); });
+    var englishVoices = allVoices.filter(function(value, index, arr){ return value.name.includes("English"); });
 
-  for (var i = 0; i < englishVoices.length; i++) {
-    var option = document.createElement("option");
-    option.text = englishVoices[i].name;
-    voicesElement.add(option);
+    for (var i = 0; i < englishVoices.length; i++) {
+      var option = document.createElement("option");
+      option.text = englishVoices[i].name;
+      voicesElement.add(option);
+    }
   }
 }
 

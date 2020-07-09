@@ -53,7 +53,7 @@
 
     function shuffle(array) {
         let counter = array.length;
-        
+
         while (counter > 0) {
             let index = Math.floor(Math.random() * counter);
             counter--;
@@ -98,7 +98,7 @@
         if (g_currentWord >= g_words.length) {
             g_currentWord = 0;
         }
-        updateResponse("Make a guess...");
+        updateResponse("Waiting for guess");
         document.getElementById("guess").value = "";
         document.getElementById("currentWord").innerText = g_words[g_currentWord];
         document.getElementById("wordNumber").innerText = "" + (g_currentWord + 1);
@@ -152,7 +152,7 @@
         <div id="container">
             <input type="file" id="fileInput" class="containerItem" />
             <p></p>
-        <input id="guess" placeholder="guess" class="containerItem">
+        <input id="guess" placeholder="enter your guess..." class="containerItem">
         <p></p>
         <button onClick="readWord()">Read Word</button>
         <button onClick="nextWord()">Next Word</button>
