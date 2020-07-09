@@ -51,7 +51,7 @@
         };
 
         document.getElementById("guess").addEventListener("keyup", event => {
-            if(event.key === "Enter") {
+            if (event.key === "Enter") {
                 document.getElementById("makeGuess").click();
                 event.preventDefault();
             }
@@ -72,6 +72,10 @@
         return array;
     }
 
+    function replaceAll(string, search, replace) {
+        return string.split(search).join(replace);
+    }
+
     // Reads a list of words from a plain text file, one word per line.
     function readWordList(evt) {
         var file = evt.target.files[0];
@@ -81,7 +85,7 @@
             fileReader.onload = function (e) {
                 // The file may have /r or /r/n for end lines. Strip out the /r and
                 // split on /n. 
-                var cleanedWords = e.target.result.replaceAll("\r", "");
+                var cleanedWords = replaceAll(e.target.result, "\r", "");
                 words = cleanedWords.split("\n");
 
                 // Filter out any blank lines, which is likely at least at the end
