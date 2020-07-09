@@ -1,0 +1,150 @@
+<!-- Simple text-to-speech sample for my dad. -->
+
+<script src="TextToSpeech.js" type="text/javascript"></script>
+<style type="text/css">
+    body {
+        font-family: Calibri;
+    }
+
+    h1 {
+        color: darkblue;
+        text-shadow: 1pt 1pt 5pt #555555;
+    }
+
+    #response {
+        font-weight: bold;
+    }
+
+    #container {
+        width: 350pt;
+    }
+
+    .containerItem {
+        border: 1px solid grey;
+        padding: 1pt;
+        width: 100%;
+    }
+</style>
+
+<script language=javascript>
+    var g_words;
+    var g_currentWord = 0;
+
+    function initialize() {
+        // Voices aren't immediately available during page load.
+        window.speechSynthesis.onvoiceschanged = window.speechSynthesis.onvoiceschanged = function () {
+            populateVoices("voices");
+        };
+
+        document.getElementById("fileInput").onchange = readWordList;
+
+        document.getElementById("voices").onchange = function () {
+            onVoiceSelected(this.value);
+        };
+
+        document.getElementById("pitch").onchange = function () {
+            onPitchSelected(this.value);
+        };
+
+        document.getElementById("rate").onchange = function () {
+            onRateSelected(this.value);
+        };
+    }
+
+    // Reads a list of words from a plain text file, one word per line.
+    function readWordList(evt) {
+        var file = evt.target.files[0];
+
+        if (file) {
+            var fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                // The file may have /r or /r/n for end lines. Strip out the /r and
+                // split on /n. 
+                var cleanedWords = e.target.result.replaceAll("\r", "");
+                words = cleanedWords.split("\n");
+
+                // Filter out any blank lines, which is likely at least at the end
+                // of the file.
+                g_words = words.filter(function (value, index, arr) { return value.trim().length > 0; });
+
+                if (g_words.length > 0) {
+                    goToWord(0);
+                }
+            }
+            fileReader.readAsText(file);
+        } else {
+            alert("Failed to load file");
+        }
+    }
+
+    function goToWord(index) {
+        g_currentWord = index;
+        if (g_currentWord >= g_words.length) {
+            g_currentWord = 0;
+        }
+        updateResponse("Make a guess...");
+        document.getElementById("guess").value = "";
+        document.getElementById("currentWord").innerText = g_words[g_currentWord];
+        document.getElementById("wordNumber").innerText = "" + (g_currentWord + 1);
+        document.getElementById("status").style.display = "block";
+    }
+
+    function nextWord() {
+        goToWord(g_currentWord + 1)
+    }
+
+    function readWord() {
+        if (g_currentWord >= 0 && g_currentWord < g_words.length) {
+            readText("The word is... " + g_words[g_currentWord]);
+        }
+    }
+
+    function makeGuess() {
+        var guess = document.getElementById("guess").value;
+        if (guess.toLowerCase().trim() === g_words[g_currentWord].toLowerCase()) {
+            updateResponse("<font color='green'>Correct!</font>")
+        } else {
+            updateResponse("<font color='red'>Sorry, the word is '" + g_words[g_currentWord] + "'</font>");
+        }
+    }
+
+    function updateResponse(html) {
+        document.getElementById("response").innerHTML = html;
+    }
+</script>
+
+<body onLoad="initialize()">
+    <h1>Word List Hearing Test</h1>
+
+        <select id="voices"></select>
+        <label>Pitch</label>
+        <select id="pitch">
+            <option value="1.0" selected>1</option>
+            <option value="1.5">1.5</option>
+            <option value="2.0">2</option>
+        </select> 
+        <label>Rate</label>
+        <select id="rate">
+            <option value="0.4">40%</option>
+            <option value="0.6">60%</option>
+            <option value="0.8" selected>80%</option>
+            <option value="1.0">100%</option>
+            <option value="1.20">120%</option>
+            <option value="1.20">140%</option>
+        </select>
+        <p></p>
+        <div id="container">
+            <input type="file" id="fileInput" class="containerItem" />
+            <p></p>
+        <input id="guess" placeholder="guess" class="containerItem">
+        <p></p>
+        <button onClick="readWord()">Read Word</button>
+        <button onClick="nextWord()">Next Word</button>
+        <button onClick="makeGuess()" style="float:right">Make Guess</button>
+        <p></p>
+        <div id="status" style="display:none">Word #<span id="wordNumber"></span>: <span id="response"></span></div>
+
+        <!-- For debugging. -->
+        <div id="currentWord" style="position:fixed; bottom:5px; left:5px; color:#ffffff"></div>
+    </div>
+</body>
