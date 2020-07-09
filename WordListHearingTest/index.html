@@ -49,6 +49,13 @@
         document.getElementById("rate").onchange = function () {
             onRateSelected(this.value);
         };
+
+        document.getElementById("guess").addEventListener("keyup", event => {
+            if(event.key === "Enter") {
+                document.getElementById("makeGuess").click();
+                event.preventDefault();
+            }
+        });
     }
 
     function shuffle(array) {
@@ -61,10 +68,10 @@
             array[counter] = array[index];
             array[index] = temp;
         }
-    
+
         return array;
     }
-    
+
     // Reads a list of words from a plain text file, one word per line.
     function readWordList(evt) {
         var file = evt.target.files[0];
@@ -132,31 +139,32 @@
 <body onLoad="initialize()">
     <h1>Word List Hearing Test</h1>
 
-        <select id="voices"></select>
-        <label>Pitch</label>
-        <select id="pitch">
-            <option value="1.0" selected>1</option>
-            <option value="1.5">1.5</option>
-            <option value="2.0">2</option>
-        </select> 
-        <label>Rate</label>
-        <select id="rate">
-            <option value="0.4">40%</option>
-            <option value="0.6">60%</option>
-            <option value="0.8" selected>80%</option>
-            <option value="1.0">100%</option>
-            <option value="1.20">120%</option>
-            <option value="1.20">140%</option>
-        </select>
+    <select id="voices"></select>
+    <label>Pitch</label>
+    <select id="pitch">
+        <option value="1.0" selected>1</option>
+        <option value="1.5">1.5</option>
+        <option value="2.0">2</option>
+    </select>
+    <label>Rate</label>
+    <select id="rate">
+        <option value="0.4">40%</option>
+        <option value="0.6">60%</option>
+        <option value="0.8" selected>80%</option>
+        <option value="1.0">100%</option>
+        <option value="1.20">120%</option>
+        <option value="1.20">140%</option>
+    </select>
+
+    <p></p>
+    <div id="container">
+        <input type="file" id="fileInput" class="containerItem" />
         <p></p>
-        <div id="container">
-            <input type="file" id="fileInput" class="containerItem" />
-            <p></p>
         <input id="guess" placeholder="enter your guess..." class="containerItem">
         <p></p>
         <button onClick="readWord()">Read Word</button>
         <button onClick="nextWord()">Next Word</button>
-        <button onClick="makeGuess()" style="float:right">Make Guess</button>
+        <button id="makeGuess" onClick="makeGuess()" style="float:right" type="submit">Make Guess</button>
         <p></p>
         <div id="status" style="display:none">Word #<span id="wordNumber"></span>: <span id="response"></span></div>
 
