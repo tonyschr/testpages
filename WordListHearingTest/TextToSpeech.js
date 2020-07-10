@@ -1,6 +1,6 @@
 var g_selectedVoice = 0;
 var g_selectedPitch = 1;
-var g_selectedRate = 0.8;
+var g_selectedRate = 1;
 
 function populateVoices(id) {
   voicesElement = document.getElementById(id);
