@@ -1,6 +1,6 @@
 <!-- Simple text-to-speech sample for my dad. -->
 
-<title>Word List Hearing Test</title>
+<title>Word & Sentence List Hearing Test</title>
 
 <script src="TextToSpeech.js" type="text/javascript"></script>
 <style type="text/css">
@@ -9,7 +9,7 @@
     }
 
     h1 {
-        color: darkblue;
+        color: rgb(52, 52, 189);
         text-shadow: 1pt 1pt 5pt #555555;
     }
 
@@ -29,8 +29,9 @@
 </style>
 
 <script language=javascript>
-    var g_words;
-    var g_currentWord = 0;
+    var g_speakableItems;
+    var g_currentItem = 0;
+    var g_hasSentences = false;
 
     function initialize() {
         // Voices aren't immediately available during page load.
@@ -38,7 +39,7 @@
             populateVoices("voices");
         };
 
-        document.getElementById("fileInput").onchange = readWordList;
+        document.getElementById("fileInput").onchange = readSpeakableItemList;
 
         document.getElementById("voices").onchange = function () {
             onVoiceSelected(this.value);
@@ -78,26 +79,41 @@
         return string.split(search).join(replace);
     }
 
-    // Reads a list of words from a plain text file, one word per line.
-    function readWordList(evt) {
-        var file = evt.target.files[0];
+    function countSpaces(str) {
+        return (str.match(/ /g) || []).length;
+    }
 
+    // Reads a list of words/sentences from a plain text file, one per line.
+    function readSpeakableItemList(evt) {
+        g_speakableItems = [];
+        g_currentItem = 0;
+        g_hasSentences = false;
+
+        var file = evt.target.files[0];
         if (file) {
             var fileReader = new FileReader();
             fileReader.onload = function (e) {
                 // The file may have /r or /r/n for end lines. Strip out the /r and
                 // split on /n. 
-                var cleanedWords = replaceAll(e.target.result, "\r", "");
-                words = cleanedWords.split("\n");
+                var cleanedItems = replaceAll(e.target.result, "\r", "");
+                items = cleanedItems.split("\n");
 
                 // Filter out any blank lines, which is likely at least at the end
                 // of the file.
-                filteredWords = words.filter(function (value, index, arr) { return value.trim().length > 0; });
+                filteredItems = items.filter(function (value, index, arr) { return value.trim().length > 0; });
 
-                g_words = shuffle(filteredWords);
+                g_speakableItems = shuffle(filteredItems);
 
-                if (g_words.length > 0) {
-                    goToWord(0);
+                // Detect whether there are sentences present, based on at least one item
+                // having enough spaces.
+                for (var i = 0; i < g_speakableItems.length; i++) {
+                    if (!g_hasSentences && countSpaces(g_speakableItems[i]) > 3) {
+                        g_hasSentences = true;
+                    }
+                }
+
+                if (g_speakableItems.length > 0) {
+                    goToItem(0);
                 }
             }
             fileReader.readAsText(file);
@@ -106,34 +122,55 @@
         }
     }
 
-    function goToWord(index) {
-        g_currentWord = index;
-        if (g_currentWord >= g_words.length) {
-            g_currentWord = 0;
+    function goToItem(index) {
+        g_currentItem = index;
+        if (g_currentItem >= g_speakableItems.length) {
+            g_currentItem = 0;
+        }
+        else if (g_currentItem < 0) {
+            g_currentItem = g_speakableItems.length - 1;
         }
         updateResponse("Waiting for guess");
         document.getElementById("guess").value = "";
-        document.getElementById("currentWord").innerText = g_words[g_currentWord];
-        document.getElementById("wordNumber").innerText = "" + (g_currentWord + 1);
+        document.getElementById("currentItem").innerText = g_speakableItems[g_currentItem];
+        document.getElementById("itemNumber").innerText = "" + (g_currentItem + 1);
         document.getElementById("status").style.display = "block";
     }
 
-    function nextWord() {
-        goToWord(g_currentWord + 1)
+    function previous() {
+        goToItem(g_currentItem - 1);
     }
 
-    function readWord() {
-        if (g_currentWord >= 0 && g_currentWord < g_words.length) {
-            readText("The word is... " + g_words[g_currentWord]);
+    function next() {
+        goToItem(g_currentItem + 1);
+    }
+
+    function read() {
+        if (g_currentItem >= 0 && g_currentItem < g_speakableItems.length) {
+            var preparationPhrase = g_hasSentences ? "" : "The word is... ";
+            readText(preparationPhrase + g_speakableItems[g_currentItem]);
         }
+    }
+
+    // Make everything lower case and remove punctation so the user doesn't 
+    // have to be exact. Note: this could be made into a regex, but keeping
+    // it simple.
+    function sanitizeString(str) {
+        var result = str.toLowerCase().trim();
+        result = replaceAll(result, "?", "");
+        result = replaceAll(result, ".", "");
+        result = replaceAll(result, "!", "");
+        result = replaceAll(result, ",", "");
+        result = replaceAll(result, "'", "");
+        return result;
     }
 
     function makeGuess() {
         var guess = document.getElementById("guess").value;
-        if (guess.toLowerCase().trim() === g_words[g_currentWord].toLowerCase()) {
+        if (sanitizeString(guess) === sanitizeString(g_speakableItems[g_currentItem])) {
             updateResponse("<font color='green'>Correct!</font>")
         } else {
-            updateResponse("<font color='red'>Sorry, the word is '" + g_words[g_currentWord] + "'</font>");
+            updateResponse("<font color='red'>Sorry, the answer is, '" + g_speakableItems[g_currentItem] + "'</font>");
         }
     }
 
@@ -143,7 +180,7 @@
 </script>
 
 <body onLoad="initialize()">
-    <h1>Word List Hearing Test</h1>
+    <h1>Word & Sentence List Hearing Test</h1>
 
     <select id="voices"></select>
     <label>Pitch</label>
@@ -168,13 +205,14 @@
         <p></p>
         <input id="guess" placeholder="enter your guess..." class="containerItem">
         <p></p>
-        <button onClick="readWord()">Read Word</button>
-        <button onClick="nextWord()">Next Word</button>
+        <button onClick="read()">Read</button>
+        <button onClick="previous()">Previous</button>
+        <button onClick="next()">Next</button>
         <button id="makeGuess" onClick="makeGuess()" style="float:right" type="submit">Make Guess</button>
         <p></p>
-        <div id="status" style="display:none">Word #<span id="wordNumber"></span>: <span id="response"></span></div>
+        <div id="status" style="display:none">Item #<span id="itemNumber"></span>: <span id="response"></span></div>
 
         <!-- For debugging. -->
-        <div id="currentWord" style="position:fixed; bottom:5px; left:5px; color:#ffffff"></div>
+        <div id="currentItem" style="position:fixed; bottom:5px; left:5px; color:#ffffff; "></div>
     </div>
 </body>
