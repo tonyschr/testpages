@@ -109,6 +109,7 @@
                 for (var i = 0; i < g_speakableItems.length; i++) {
                     if (!g_hasSentences && countSpaces(g_speakableItems[i]) > 3) {
                         g_hasSentences = true;
+                        break;
                     }
                 }
 
