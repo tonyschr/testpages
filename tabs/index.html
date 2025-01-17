@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="../basic.css">
+    <title>Tony's Test Pages: Tabs / Windows</title>
+</head>
+
+<script>
+    function openMany(num) {
+        for (var i = 0; i < num; i++) {
+            window.open("http://www.tonyschr.com");
+        }
+    }
+</script>
+
+<body>
+    <h2>Tabs / Windows</h2>
+
+    <p>Open Tabs: <button padding="10px" onclick="openMany(5)">5</button> <button padding="10px" onclick="openMany(10))">10</button> <button padding="10px" onclick="openMany(20)">20</button> <button padding="10px" onclick="openMany(30)">30</button></p>
+</body>
+
+</html>
