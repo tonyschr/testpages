@@ -284,11 +284,14 @@ function drawPiece(piece, isSelected) {
   const angleDeg = piece.rotation * 45;
 
   // The group's transform centres the piece on its cell and applies rotation.
-  // CSS custom properties --pf / --ps propagate into the <use> shadow content
-  // so the <symbol> artwork can reference them with var(--pf) / var(--ps).
+  // Player colours flow into the <use> shadow content via standard SVG inheritance:
+  //   fill="inherit"       in the symbol → receives this group's fill (body colour)
+  //   fill="currentColor"  in the symbol → receives this group's color (accent colour)
+  //   stroke="currentColor"              → same accent colour for outlines
   const group = el('g', {
     transform: `translate(${cx},${cy}) rotate(${angleDeg})`,
-    style:     `--pf:${c.fill};--ps:${c.stroke}`,
+    fill:      c.fill,
+    color:     c.stroke,
     cursor:    'pointer',
   });
 

@@ -20,11 +20,14 @@
     Design rules for all pieces:
       • viewBox="-24 -24 48 48"  — 48×48 px canvas, centred at origin.
       • North = up = −Y.  Draw the piece FACING UP (rotation 0).
-      • Use CSS custom properties for player-specific colours:
-          fill="var(--pf,#fallback)"    — body fill
-          stroke="var(--ps,#fallback)"  — outline / accent
-        The game sets --pf and --ps on the parent <g> at render time.
-        Fallback values are used when previewing files directly in Inkscape.
+      • Player colours are applied via standard SVG/CSS inheritance — no
+        CSS custom properties (no --double-dash syntax) are used:
+          fill="inherit"       on body elements   → receives the parent <g>'s fill
+          fill="currentColor"  on accent elements → receives the parent <g>'s color
+          stroke="currentColor"                   → same accent colour for outlines
+        Hard-coded colours (e.g. #ffe040 muzzle, #88ccff mirror line) are fine.
+        Inkscape previews will show the inherit/currentColor values computed from
+        the SVG root (typically black), which is expected.
       • Keep artwork within ±23 units to avoid clipping by <use> bounds.
     ═══════════════════════════════════════════════════════════════════════
   -->
@@ -36,22 +39,22 @@
            Vulnerable sides : NE, SE, SW, NW  (no markers)           -->
       <symbol id="piece-stomper" viewBox="-24 -24 48 48">
         <circle cx="0" cy="0" r="19"
-                fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+                fill="inherit" stroke="currentColor" stroke-width="1.5"/>
         <!-- Reflective side tabs at N, E, S, W -->
-        <rect x="-4.5" y="-23" width="9"  height="6"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- N -->
-        <rect x="17"   y="-4.5" width="6" height="9"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- E -->
-        <rect x="-4.5" y="17"   width="9" height="6"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- S -->
-        <rect x="-23"  y="-4.5" width="6" height="9"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- W -->
+        <rect x="-4.5" y="-23" width="9"  height="6"  rx="1.5" fill="currentColor"/> <!-- N -->
+        <rect x="17"   y="-4.5" width="6" height="9"  rx="1.5" fill="currentColor"/> <!-- E -->
+        <rect x="-4.5" y="17"   width="9" height="6"  rx="1.5" fill="currentColor"/> <!-- S -->
+        <rect x="-23"  y="-4.5" width="6" height="9"  rx="1.5" fill="currentColor"/> <!-- W -->
       </symbol>
 
       <!-- ── LASER CANNON ─────────────────────────────────────────────────
            Fires from the North face.  All sides vulnerable.           -->
       <symbol id="piece-laser-cannon" viewBox="-24 -24 48 48">
         <rect x="-15" y="-10" width="30" height="26" rx="4"
-              fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+              fill="inherit" stroke="currentColor" stroke-width="1.5"/>
         <!-- Barrel pointing North (up = −Y) -->
         <rect x="-5.5" y="-23" width="11" height="16" rx="2.5"
-              fill="var(--ps,#4a90d9)"/>
+              fill="currentColor"/>
         <!-- Muzzle / firing indicator -->
         <circle cx="0" cy="-23" r="4" fill="#ffe040"/>
       </symbol>
@@ -61,13 +64,13 @@
            South face (bottom): pass-through — own laser travels through.  -->
       <symbol id="piece-laser-tube" viewBox="-24 -24 48 48">
         <rect x="-15" y="-17" width="30" height="34" rx="4"
-              fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+              fill="inherit" stroke="currentColor" stroke-width="1.5"/>
         <!-- Through-channel along N→S axis -->
         <rect x="-5.5" y="-17" width="11" height="34"
               fill="#000" fill-opacity="0.55"/>
         <!-- Reflective front (North / top): bright bar -->
         <rect x="-15" y="-17" width="30" height="6" rx="2"
-              fill="var(--ps,#4a90d9)" fill-opacity="0.95"/>
+              fill="currentColor" fill-opacity="0.95"/>
         <!-- Pass-through back (South / bottom): dimmer open bar -->
         <rect x="-5.5" y="11" width="11" height="6" rx="1"
               fill="#384060"/>
@@ -78,16 +81,16 @@
            Mirror surface shown as a bold "\" diagonal line.            -->
       <symbol id="piece-mirror" viewBox="-24 -24 48 48">
         <rect x="-18" y="-18" width="36" height="36" rx="3"
-              fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+              fill="inherit" stroke="currentColor" stroke-width="1.5"/>
         <!-- Mirror surface: "\" line (NW→SE) -->
         <line x1="-12" y1="-12" x2="12" y2="12"
               stroke="#88ccff" stroke-width="4" stroke-linecap="round"/>
         <!-- Reflective West face: bright left bar -->
         <rect x="-18" y="-12" width="5" height="24" rx="1.5"
-              fill="var(--ps,#4a90d9)" fill-opacity="0.9"/>
+              fill="currentColor" fill-opacity="0.9"/>
         <!-- Reflective NW face: bright top-left bar -->
         <rect x="-18" y="-18" width="24" height="5" rx="1.5"
-              fill="var(--ps,#4a90d9)" fill-opacity="0.9"/>
+              fill="currentColor" fill-opacity="0.9"/>
       </symbol>
 
       <!-- ── SPLITTER ──────────────────────────────────────────────────────
@@ -95,13 +98,13 @@
            Splits the beam into two perpendicular outgoing beams.       -->
       <symbol id="piece-splitter" viewBox="-24 -24 48 48">
         <polygon points="0,-21 21,0 0,21 -21,0"
-                 fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+                 fill="inherit" stroke="currentColor" stroke-width="1.5"/>
         <!-- Reflective NE edge -->
         <line x1="0" y1="-21" x2="21" y2="0"
-              stroke="var(--ps,#4a90d9)" stroke-width="3.5" stroke-linecap="round"/>
+              stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
         <!-- Reflective SE edge -->
         <line x1="21" y1="0" x2="0" y2="21"
-              stroke="var(--ps,#4a90d9)" stroke-width="3.5" stroke-linecap="round"/>
+              stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
         <!-- Faint cross suggesting split output directions -->
         <line x1="-13" y1="0" x2="13" y2="0"
               stroke="#88ccff" stroke-width="1.5" stroke-opacity="0.7"/>

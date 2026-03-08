@@ -15,28 +15,28 @@
     • North  = up  = −Y direction.  Piece faces NORTH at rotation 0.
     • Canvas : viewBox="-24 -24 48 48"
 
-  CSS custom properties:
-    --pf  body fill       fill="var(--pf,#1a3a6a)"
-    --ps  stroke/accent   stroke="var(--ps,#4a90d9)"
+  Colour conventions (no CSS custom properties):
+    fill="inherit"       — body fill, provided by the game at runtime
+    fill="currentColor"  — accent/highlight, provided by the game at runtime
+    stroke="currentColor"— outline, same accent colour
+  Hard-coded colours are intentional fixed values unrelated to player.
   ═══════════════════════════════════════════════════════════════
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48" width="96" height="96">
 
   <!-- Body: diamond -->
   <polygon points="0,-21 21,0 0,21 -21,0"
-           fill="var(--pf,#1a3a6a)"
-           stroke="var(--ps,#4a90d9)"
-           stroke-width="1.5"/>
+           fill="inherit" stroke="currentColor" stroke-width="1.5"/>
 
   <!-- Reflective NE edge (top-right face) -->
   <line x1="0" y1="-21" x2="21" y2="0"
-        stroke="var(--ps,#4a90d9)" stroke-width="3.5" stroke-linecap="round"/>
+        stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
 
   <!-- Reflective SE edge (bottom-right face) -->
   <line x1="21" y1="0" x2="0" y2="21"
-        stroke="var(--ps,#4a90d9)" stroke-width="3.5" stroke-linecap="round"/>
+        stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
 
-  <!-- Split indicators: faint cross suggesting the two outgoing directions -->
+  <!-- Split indicators: faint cross suggesting the two outgoing directions — fixed colour -->
   <line x1="-13" y1="0" x2="13" y2="0"
         stroke="#88ccff" stroke-width="1.5" stroke-opacity="0.7"/>
   <line x1="0" y1="-13" x2="0" y2="13"

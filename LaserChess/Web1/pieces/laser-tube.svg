@@ -12,18 +12,18 @@
     • North  = up  = −Y direction.  Piece faces NORTH at rotation 0.
     • Canvas : viewBox="-24 -24 48 48"
 
-  CSS custom properties:
-    --pf  body fill       fill="var(--pf,#1a3a6a)"
-    --ps  stroke/accent   stroke="var(--ps,#4a90d9)"
+  Colour conventions (no CSS custom properties):
+    fill="inherit"       — body fill, provided by the game at runtime
+    fill="currentColor"  — accent/highlight, provided by the game at runtime
+    stroke="currentColor"— outline, same accent colour
+  Hard-coded colours are intentional fixed values unrelated to player.
   ═══════════════════════════════════════════════════════════════
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48" width="96" height="96">
 
   <!-- Body: rectangle -->
   <rect x="-15" y="-17" width="30" height="34" rx="4"
-        fill="var(--pf,#1a3a6a)"
-        stroke="var(--ps,#4a90d9)"
-        stroke-width="1.5"/>
+        fill="inherit" stroke="currentColor" stroke-width="1.5"/>
 
   <!-- Through-channel along N→S axis (laser passes through) -->
   <rect x="-5.5" y="-17" width="11" height="34"
@@ -31,7 +31,7 @@
 
   <!-- Reflective front (North / top): bright bar -->
   <rect x="-15" y="-17" width="30" height="6" rx="2"
-        fill="var(--ps,#4a90d9)" fill-opacity="0.95"/>
+        fill="currentColor" fill-opacity="0.95"/>
 
   <!-- Pass-through back (South / bottom): darker, open-ended indicator -->
   <rect x="-5.5" y="11" width="11" height="6" rx="1"
