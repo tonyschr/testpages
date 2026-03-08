@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laser Chess</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!--
+    ═══════════════════════════════════════════════════════════════════════
+    PIECE ARTWORK — SVG Symbol Definitions
+    ═══════════════════════════════════════════════════════════════════════
+    Each <symbol> defines one piece type.  The canonical source files live
+    in the pieces/ directory and can be opened/edited directly in Inkscape.
+    After editing, copy the inner content of the <svg> back into the
+    matching <symbol> below.
+
+    Design rules for all pieces:
+      • viewBox="-24 -24 48 48"  — 48×48 px canvas, centred at origin.
+      • North = up = −Y.  Draw the piece FACING UP (rotation 0).
+      • Use CSS custom properties for player-specific colours:
+          fill="var(--pf,#fallback)"    — body fill
+          stroke="var(--ps,#fallback)"  — outline / accent
+        The game sets --pf and --ps on the parent <g> at render time.
+        Fallback values are used when previewing files directly in Inkscape.
+      • Keep artwork within ±23 units to avoid clipping by <use> bounds.
+    ═══════════════════════════════════════════════════════════════════════
+  -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none; position:absolute" aria-hidden="true">
+    <defs>
+
+      <!-- ── STOMPER ──────────────────────────────────────────────────────
+           Reflective sides : N, E, S, W  (bright tab markers)
+           Vulnerable sides : NE, SE, SW, NW  (no markers)           -->
+      <symbol id="piece-stomper" viewBox="-24 -24 48 48">
+        <circle cx="0" cy="0" r="19"
+                fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+        <!-- Reflective side tabs at N, E, S, W -->
+        <rect x="-4.5" y="-23" width="9"  height="6"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- N -->
+        <rect x="17"   y="-4.5" width="6" height="9"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- E -->
+        <rect x="-4.5" y="17"   width="9" height="6"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- S -->
+        <rect x="-23"  y="-4.5" width="6" height="9"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- W -->
+      </symbol>
+
+      <!-- ── LASER CANNON ─────────────────────────────────────────────────
+           Fires from the North face.  All sides vulnerable.           -->
+      <symbol id="piece-laser-cannon" viewBox="-24 -24 48 48">
+        <rect x="-15" y="-10" width="30" height="26" rx="4"
+              fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+        <!-- Barrel pointing North (up = −Y) -->
+        <rect x="-5.5" y="-23" width="11" height="16" rx="2.5"
+              fill="var(--ps,#4a90d9)"/>
+        <!-- Muzzle / firing indicator -->
+        <circle cx="0" cy="-23" r="4" fill="#ffe040"/>
+      </symbol>
+
+      <!-- ── LASER TUBE ────────────────────────────────────────────────────
+           North face (top)   : reflective — enemies bounce back.
+           South face (bottom): pass-through — own laser travels through.  -->
+      <symbol id="piece-laser-tube" viewBox="-24 -24 48 48">
+        <rect x="-15" y="-17" width="30" height="34" rx="4"
+              fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+        <!-- Through-channel along N→S axis -->
+        <rect x="-5.5" y="-17" width="11" height="34"
+              fill="#000" fill-opacity="0.55"/>
+        <!-- Reflective front (North / top): bright bar -->
+        <rect x="-15" y="-17" width="30" height="6" rx="2"
+              fill="var(--ps,#4a90d9)" fill-opacity="0.95"/>
+        <!-- Pass-through back (South / bottom): dimmer open bar -->
+        <rect x="-5.5" y="11" width="11" height="6" rx="1"
+              fill="#384060"/>
+      </symbol>
+
+      <!-- ── MIRROR ────────────────────────────────────────────────────────
+           Reflective sides: W and NW.  Redirects laser 90° clockwise.
+           Mirror surface shown as a bold "\" diagonal line.            -->
+      <symbol id="piece-mirror" viewBox="-24 -24 48 48">
+        <rect x="-18" y="-18" width="36" height="36" rx="3"
+              fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+        <!-- Mirror surface: "\" line (NW→SE) -->
+        <line x1="-12" y1="-12" x2="12" y2="12"
+              stroke="#88ccff" stroke-width="4" stroke-linecap="round"/>
+        <!-- Reflective West face: bright left bar -->
+        <rect x="-18" y="-12" width="5" height="24" rx="1.5"
+              fill="var(--ps,#4a90d9)" fill-opacity="0.9"/>
+        <!-- Reflective NW face: bright top-left bar -->
+        <rect x="-18" y="-18" width="24" height="5" rx="1.5"
+              fill="var(--ps,#4a90d9)" fill-opacity="0.9"/>
+      </symbol>
+
+      <!-- ── SPLITTER ──────────────────────────────────────────────────────
+           Reflective sides: NE and SE.
+           Splits the beam into two perpendicular outgoing beams.       -->
+      <symbol id="piece-splitter" viewBox="-24 -24 48 48">
+        <polygon points="0,-21 21,0 0,21 -21,0"
+                 fill="var(--pf,#1a3a6a)" stroke="var(--ps,#4a90d9)" stroke-width="1.5"/>
+        <!-- Reflective NE edge -->
+        <line x1="0" y1="-21" x2="21" y2="0"
+              stroke="var(--ps,#4a90d9)" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Reflective SE edge -->
+        <line x1="21" y1="0" x2="0" y2="21"
+              stroke="var(--ps,#4a90d9)" stroke-width="3.5" stroke-linecap="round"/>
+        <!-- Faint cross suggesting split output directions -->
+        <line x1="-13" y1="0" x2="13" y2="0"
+              stroke="#88ccff" stroke-width="1.5" stroke-opacity="0.7"/>
+        <line x1="0" y1="-13" x2="0" y2="13"
+              stroke="#88ccff" stroke-width="1.5" stroke-opacity="0.7"/>
+      </symbol>
+
+    </defs>
+  </svg>
+
+  <div id="app">
+    <header>
+      <h1>Laser Chess</h1>
+      <div id="status-bar">
+        <div id="player-indicator" class="player-1">Player 1's Turn</div>
+        <div id="actions-display">Actions: <span id="actions-count">3</span></div>
+      </div>
+      <div id="controls">
+        <button id="btn-rotate-ccw" disabled title="Rotate selected piece 45° counter-clockwise (1 action)">&#8634; CCW</button>
+        <button id="btn-rotate-cw" disabled title="Rotate selected piece 45° clockwise (1 action)">&#8635; CW</button>
+        <button id="btn-fire" title="Fire all lasers for current player">Fire Lasers</button>
+        <button id="btn-end-turn" title="End turn">End Turn</button>
+        <button id="btn-new-game" title="Start a new game">New Game</button>
+      </div>
+    </header>
+    <main>
+      <div id="board-container">
+        <svg id="board" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div id="sidebar">
+        <div id="piece-info">
+          <h3>Selected Piece</h3>
+          <div id="selected-piece-details">Click a piece to select it.</div>
+        </div>
+        <div id="legend">
+          <h3>Piece Legend</h3>
+          <div class="legend-item"><span class="legend-icon stomper"></span> Stomper</div>
+          <div class="legend-item"><span class="legend-icon cannon"></span> Laser Cannon</div>
+          <div class="legend-item"><span class="legend-icon tube"></span> Laser Tube</div>
+          <div class="legend-item"><span class="legend-icon mirror"></span> Mirror</div>
+          <div class="legend-item"><span class="legend-icon splitter"></span> Splitter</div>
+        </div>
+        <div id="game-log">
+          <h3>Game Log</h3>
+          <div id="log-entries"></div>
+        </div>
+      </div>
+    </main>
+    <div id="game-over-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2 id="winner-text"></h2>
+        <button id="btn-modal-new-game">New Game</button>
+      </div>
+    </div>
+  </div>
+  <script src="js/pieces.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

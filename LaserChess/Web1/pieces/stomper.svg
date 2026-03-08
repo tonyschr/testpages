@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  STOMPER — Laser Chess piece
+  ═══════════════════════════════════════════════════════════════
+  Reflective sides : N, E, S, W  (bright tab markers)
+  Vulnerable sides : NE, SE, SW, NW  (no markers)
+
+  Coordinate system
+    • Origin (0,0) is the piece centre.
+    • North  = up  = −Y direction.  Piece faces NORTH at rotation 0.
+    • Canvas : viewBox="-24 -24 48 48"  (48×48 px, centred at origin)
+
+  Player colours are applied at runtime via CSS custom properties:
+    --pf  body fill     e.g.  fill="var(--pf,#1a3a6a)"
+    --ps  stroke/accent e.g.  stroke="var(--ps,#4a90d9)"
+  The fallback values (after the comma) are used when the file is
+  opened directly in Inkscape or a browser without the game context.
+  ═══════════════════════════════════════════════════════════════
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48" width="96" height="96">
+
+  <!-- Body: circle -->
+  <circle cx="0" cy="0" r="19"
+          fill="var(--pf,#1a3a6a)"
+          stroke="var(--ps,#4a90d9)"
+          stroke-width="1.5"/>
+
+  <!-- Reflective side markers: small bright bars at N, E, S, W -->
+  <rect x="-4.5" y="-23" width="9"  height="6"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- N -->
+  <rect x="17"   y="-4.5" width="6" height="9"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- E -->
+  <rect x="-4.5" y="17"   width="9" height="6"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- S -->
+  <rect x="-23"  y="-4.5" width="6" height="9"  rx="1.5" fill="var(--ps,#4a90d9)"/> <!-- W -->
+
+</svg>

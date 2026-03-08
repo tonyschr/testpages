@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  LASER CANNON — Laser Chess piece
+  ═══════════════════════════════════════════════════════════════
+  Fires a laser from its North face (top, barrel).
+  All 8 sides are vulnerable — destroying a cannon is a key goal.
+
+  Coordinate system
+    • Origin (0,0) is the piece centre.
+    • North  = up  = −Y direction.  Piece faces NORTH at rotation 0.
+    • Canvas : viewBox="-24 -24 48 48"
+
+  CSS custom properties:
+    --pf  body fill       fill="var(--pf,#1a3a6a)"
+    --ps  stroke/accent   stroke="var(--ps,#4a90d9)"
+  ═══════════════════════════════════════════════════════════════
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48" width="96" height="96">
+
+  <!-- Body: rectangle -->
+  <rect x="-15" y="-10" width="30" height="26" rx="4"
+        fill="var(--pf,#1a3a6a)"
+        stroke="var(--ps,#4a90d9)"
+        stroke-width="1.5"/>
+
+  <!-- Barrel pointing North (up = −Y) -->
+  <rect x="-5.5" y="-23" width="11" height="16" rx="2.5"
+        fill="var(--ps,#4a90d9)"/>
+
+  <!-- Muzzle / firing point indicator -->
+  <circle cx="0" cy="-23" r="4" fill="#ffe040"/>
+
+</svg>

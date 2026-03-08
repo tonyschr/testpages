@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MIRROR — Laser Chess piece
+  ═══════════════════════════════════════════════════════════════
+  Two consecutive reflective sides: West (W) and North-West (NW).
+  Redirects any incoming laser 90° clockwise.
+
+  Example at rotation 0:
+    • Laser going East  hits W  face → exits going South  (90° CW)
+    • Laser going SE    hits NW face → exits going SW     (90° CW)
+
+  Coordinate system
+    • Origin (0,0) is the piece centre.
+    • North  = up  = −Y direction.  Piece faces NORTH at rotation 0.
+    • Canvas : viewBox="-24 -24 48 48"
+
+  CSS custom properties:
+    --pf  body fill       fill="var(--pf,#1a3a6a)"
+    --ps  stroke/accent   stroke="var(--ps,#4a90d9)"
+  ═══════════════════════════════════════════════════════════════
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48" width="96" height="96">
+
+  <!-- Body: square -->
+  <rect x="-18" y="-18" width="36" height="36" rx="3"
+        fill="var(--pf,#1a3a6a)"
+        stroke="var(--ps,#4a90d9)"
+        stroke-width="1.5"/>
+
+  <!-- Mirror surface indicator: bold "\" line (NW→SE) -->
+  <line x1="-12" y1="-12" x2="12" y2="12"
+        stroke="#88ccff" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Reflective West face: bright bar on left side -->
+  <rect x="-18" y="-12" width="5" height="24" rx="1.5"
+        fill="var(--ps,#4a90d9)" fill-opacity="0.9"/>
+
+  <!-- Reflective NW face: bright bar on top-left portion -->
+  <rect x="-18" y="-18" width="24" height="5" rx="1.5"
+        fill="var(--ps,#4a90d9)" fill-opacity="0.9"/>
+
+</svg>

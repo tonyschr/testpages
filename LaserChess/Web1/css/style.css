@@ -1,0 +1,245 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #12121e;
+  color: #ddd;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ── Header ── */
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: #1a1a2e;
+  border-bottom: 2px solid #0f3460;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+h1 {
+  font-size: 1.4rem;
+  color: #e94560;
+  letter-spacing: 0.05em;
+}
+
+#status-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+#player-indicator {
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+#player-indicator.player-1 {
+  background: #1a3a6a;
+  color: #7eb8f7;
+  border: 1px solid #2a5aaa;
+}
+
+#player-indicator.player-2 {
+  background: #6a1a1a;
+  color: #f77e7e;
+  border: 1px solid #aa2a2a;
+}
+
+#actions-display {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+#actions-count {
+  font-weight: bold;
+  color: #eee;
+}
+
+#controls {
+  display: flex;
+  gap: 0.4rem;
+}
+
+button {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid #2a4a7a;
+  background: #0f2040;
+  color: #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+button:hover:not(:disabled) {
+  background: #1a3a6a;
+  color: #fff;
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+#btn-fire {
+  border-color: #7a2a0f;
+  background: #3a1008;
+  color: #f09060;
+}
+
+#btn-fire:hover:not(:disabled) {
+  background: #6a2010;
+  color: #ffb080;
+}
+
+/* ── Main layout ── */
+
+main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+#board-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  overflow: auto;
+}
+
+#board {
+  display: block;
+  /* drop-shadow for board */
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.6));
+}
+
+/* ── Sidebar ── */
+
+#sidebar {
+  width: 190px;
+  padding: 0.75rem;
+  background: #1a1a2e;
+  border-left: 2px solid #0f3460;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+#sidebar h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6a8aaa;
+  margin-bottom: 0.4rem;
+}
+
+#selected-piece-details {
+  font-size: 0.8rem;
+  color: #999;
+  line-height: 1.5;
+}
+
+#selected-piece-details b {
+  color: #ddd;
+}
+
+/* Legend */
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  color: #999;
+  margin-bottom: 0.25rem;
+}
+
+.legend-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legend-icon.stomper    { background: #888; border-radius: 50%; }
+.legend-icon.cannon     { background: #b8a000; }
+.legend-icon.tube       { background: #00aaaa; }
+.legend-icon.mirror     { background: #aaaacc; clip-path: polygon(0 0, 0 100%, 100% 100%); }
+.legend-icon.splitter   { background: #aa44aa; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+
+/* Game log */
+
+#log-entries {
+  font-size: 0.75rem;
+  color: #888;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#log-entries div {
+  padding: 0.15rem 0;
+  border-bottom: 1px solid #1a2a3a;
+}
+
+#log-entries div:first-child {
+  color: #aaa;
+}
+
+/* ── Game over modal ── */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #1a1a2e;
+  border: 2px solid #e94560;
+  border-radius: 8px;
+  padding: 2.5rem 3rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-content h2 {
+  font-size: 2rem;
+  color: #e94560;
+}
+
+.modal-content button {
+  font-size: 1rem;
+  padding: 0.5rem 1.5rem;
+}

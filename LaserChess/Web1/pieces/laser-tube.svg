@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  LASER TUBE — Laser Chess piece
+  ═══════════════════════════════════════════════════════════════
+  Placed in front of a Laser Cannon to protect it.
+    • North face (top)   : REFLECTIVE — enemy lasers bounce back.
+    • South face (bottom): PASS-THROUGH — own cannon's beam travels through.
+    • All other sides    : vulnerable.
+
+  Coordinate system
+    • Origin (0,0) is the piece centre.
+    • North  = up  = −Y direction.  Piece faces NORTH at rotation 0.
+    • Canvas : viewBox="-24 -24 48 48"
+
+  CSS custom properties:
+    --pf  body fill       fill="var(--pf,#1a3a6a)"
+    --ps  stroke/accent   stroke="var(--ps,#4a90d9)"
+  ═══════════════════════════════════════════════════════════════
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48" width="96" height="96">
+
+  <!-- Body: rectangle -->
+  <rect x="-15" y="-17" width="30" height="34" rx="4"
+        fill="var(--pf,#1a3a6a)"
+        stroke="var(--ps,#4a90d9)"
+        stroke-width="1.5"/>
+
+  <!-- Through-channel along N→S axis (laser passes through) -->
+  <rect x="-5.5" y="-17" width="11" height="34"
+        fill="#000" fill-opacity="0.55"/>
+
+  <!-- Reflective front (North / top): bright bar -->
+  <rect x="-15" y="-17" width="30" height="6" rx="2"
+        fill="var(--ps,#4a90d9)" fill-opacity="0.95"/>
+
+  <!-- Pass-through back (South / bottom): darker, open-ended indicator -->
+  <rect x="-5.5" y="11" width="11" height="6" rx="1"
+        fill="#384060"/>
+
+</svg>
