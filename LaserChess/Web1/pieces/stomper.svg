@@ -2,8 +2,11 @@
 <!--
   STOMPER — Laser Chess piece
   ═══════════════════════════════════════════════════════════════
-  Reflective sides : N, E, S, W  (bright tab markers)
-  Vulnerable sides : NE, SE, SW, NW  (no markers)
+  Reflective sides : NW, N, NE  (top-left, top, top-right — bright edges)
+  Vulnerable sides : E, SE, S, SW, W  (no highlight)
+
+  The piece is a regular octagon with a flat N face at the top.
+  Rotating the piece in-game changes which sides face the opponent.
 
   Coordinate system
     • Origin (0,0) is the piece centre.
@@ -14,19 +17,29 @@
     fill="inherit"       — body fill, provided by the game at runtime
     fill="currentColor"  — accent/highlight, provided by the game at runtime
     stroke="currentColor"— outline, same accent colour
-  Hard-coded colours are intentional fixed values unrelated to player.
   ═══════════════════════════════════════════════════════════════
+
+  Octagon vertex layout (circumradius = 19):
+    a = 19·cos(22.5°) ≈ 17.5,  b = 19·sin(22.5°) ≈ 7.3
+
+    (-b,-a)──(b,-a)           ← N face (top, horizontal)
+    /  NW face  NE face  \
+  (-a,-b)          (a,-b)
+  |   W face      E face   |
+  (-a, b)          (a, b)
+    \  SW face  SE face  /
+    (-b, a)──(b, a)            ← S face (bottom)
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48" width="96" height="96">
 
-  <!-- Body: circle -->
-  <circle cx="0" cy="0" r="19"
-          fill="inherit" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Body: regular octagon, flat-top -->
+  <polygon
+    points="-7.3,-17.5 7.3,-17.5 17.5,-7.3 17.5,7.3 7.3,17.5 -7.3,17.5 -17.5,7.3 -17.5,-7.3"
+    fill="inherit" stroke="currentColor" stroke-width="1.5"/>
 
-  <!-- Reflective side markers: small bright bars at N, E, S, W -->
-  <rect x="-4.5" y="-23" width="9"  height="6"  rx="1.5" fill="currentColor"/> <!-- N -->
-  <rect x="17"   y="-4.5" width="6" height="9"  rx="1.5" fill="currentColor"/> <!-- E -->
-  <rect x="-4.5" y="17"   width="9" height="6"  rx="1.5" fill="currentColor"/> <!-- S -->
-  <rect x="-23"  y="-4.5" width="6" height="9"  rx="1.5" fill="currentColor"/> <!-- W -->
+  <!-- Reflective faces highlighted with a thicker bright stroke -->
+  <line x1="-17.5" y1="-7.3"  x2="-7.3"  y2="-17.5" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/> <!-- NW -->
+  <line x1="-7.3"  y1="-17.5" x2="7.3"   y2="-17.5" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/> <!-- N  -->
+  <line x1="7.3"   y1="-17.5" x2="17.5"  y2="-7.3"  stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/> <!-- NE -->
 
 </svg>

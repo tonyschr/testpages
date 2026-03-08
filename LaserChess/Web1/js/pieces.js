@@ -62,11 +62,13 @@ const REFLECT_SLASH = [2, 1, 0, 7, 6, 5, 4, 3];
 const PIECE_TYPES = {
 
   // ── Stomper ──
-  // Roundish piece. Cardinal sides (N/E/S/W) are reflective flat surfaces that
-  // bounce lasers straight back. Diagonal sides are vulnerable.
+  // Octagonal piece. The three "front" faces (NW, N, NE) are reflective flat
+  // surfaces that bounce lasers straight back. The remaining five sides are
+  // vulnerable. Rotating the piece changes which sides face the enemy.
   STOMPER: {
     name: 'Stomper',
-    sides: [SIDE_R, SIDE_V, SIDE_R, SIDE_V, SIDE_R, SIDE_V, SIDE_R, SIDE_V],
+    //                  N        NE       E        SE       S        SW       W        NW
+    sides: [SIDE_R, SIDE_R, SIDE_V, SIDE_V, SIDE_V, SIDE_V, SIDE_V, SIDE_R],
     reflect(localDir /*, localHitSide */) { return reflectFlat(localDir); },
     laserSides: [],
     maxMoves: 2,
