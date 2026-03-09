@@ -4,7 +4,7 @@
 const CELL_SIZE       = 58;  // pixels per board cell
 const BOARD_ROWS      = 10;
 const BOARD_COLS      = 10;
-const ACTIONS_PER_TURN = 3;
+const ACTIONS_PER_TURN = 300; // 300 for testing
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 

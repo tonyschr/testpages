@@ -2,41 +2,38 @@
 <!--
   MIRROR — Laser Chess piece
   ═══════════════════════════════════════════════════════════════
-  Two consecutive reflective sides: West (W) and North-West (NW).
-  Redirects any incoming laser 90° clockwise.
+  Shape    : right isoceles triangle, right angle at SE corner.
+             Vertices: SW(-17,17), NE(17,-17), SE(17,17)
 
-  Example at rotation 0:
-    • Laser going East  hits W  face → exits going South  (90° CW)
-    • Laser going SE    hits NW face → exits going SW     (90° CW)
+  Sides at rotation 0:
+    "/" hypotenuse (SW→NE) spans 3 face slots — all REFLECTIVE:
+      W  face: laser going E  → exits going N   (90°)
+      NW face: laser going SE → exits going NW  (back-scatter)
+      N  face: laser going S  → exits going W   (90°)
+    S face (bottom leg): VULNERABLE
+    E face (right leg) : VULNERABLE
+
+  Reflection rule: "/" surface (REFLECT_SLASH)
 
   Coordinate system
     • Origin (0,0) is the piece centre.
     • North  = up  = −Y direction.  Piece faces NORTH at rotation 0.
-    • Canvas : viewBox="-24 -24 48 48"
+    • Canvas : viewBox="-24 -24 48 48"  (48×48 px, centred at origin)
 
   Colour conventions (no CSS custom properties):
     fill="inherit"       — body fill, provided by the game at runtime
     fill="currentColor"  — accent/highlight, provided by the game at runtime
     stroke="currentColor"— outline, same accent colour
-  Hard-coded colours are intentional fixed values unrelated to player.
   ═══════════════════════════════════════════════════════════════
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 -24 48 48" width="96" height="96">
 
-  <!-- Body: square -->
-  <rect x="-18" y="-18" width="36" height="36" rx="3"
-        fill="inherit" stroke="currentColor" stroke-width="1.5"/>
+  <!-- Triangle body: right angle at SE (bottom-right), "/" hypotenuse SW→NE -->
+  <polygon points="-17,17 17,-17 17,17"
+           fill="inherit" stroke="currentColor" stroke-width="1.5"/>
 
-  <!-- Mirror surface indicator: bold "\" line (NW→SE) — fixed colour -->
-  <line x1="-12" y1="-12" x2="12" y2="12"
-        stroke="#88ccff" stroke-width="4" stroke-linecap="round"/>
-
-  <!-- Reflective West face: bright bar on left side -->
-  <rect x="-18" y="-12" width="5" height="24" rx="1.5"
-        fill="currentColor" fill-opacity="0.9"/>
-
-  <!-- Reflective NW face: bright bar on top-left portion -->
-  <rect x="-18" y="-18" width="24" height="5" rx="1.5"
-        fill="currentColor" fill-opacity="0.9"/>
+  <!-- Reflective "/" hypotenuse: SW(-17,17) → NE(17,-17) — bright accent -->
+  <line x1="-17" y1="17" x2="17" y2="-17"
+        stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
 
 </svg>

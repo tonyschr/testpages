@@ -78,39 +78,37 @@
       </symbol>
 
       <!-- ── MIRROR ────────────────────────────────────────────────────────
-           Reflective sides: W and NW.  Redirects laser 90° clockwise.
-           Mirror surface shown as a bold "\" diagonal line.            -->
+           Right isoceles triangle, right angle at SE. "/" hypotenuse (SW→NE)
+           spans 3 reflective face slots: W, NW, N.  Legs (S, E) are vulnerable.
+             E laser hits W face  → exits N   (90°, REFLECT_SLASH)
+             S laser hits N face  → exits W   (90°, REFLECT_SLASH)
+             SE laser hits NW face → back-scatter NW                         -->
       <symbol id="piece-mirror" viewBox="-24 -24 48 48">
-        <rect x="-18" y="-18" width="36" height="36" rx="3"
-              fill="inherit" stroke="currentColor" stroke-width="1.5"/>
-        <!-- Mirror surface: "\" line (NW→SE) -->
-        <line x1="-12" y1="-12" x2="12" y2="12"
-              stroke="#88ccff" stroke-width="4" stroke-linecap="round"/>
-        <!-- Reflective West face: bright left bar -->
-        <rect x="-18" y="-12" width="5" height="24" rx="1.5"
-              fill="currentColor" fill-opacity="0.9"/>
-        <!-- Reflective NW face: bright top-left bar -->
-        <rect x="-18" y="-18" width="24" height="5" rx="1.5"
-              fill="currentColor" fill-opacity="0.9"/>
+        <!-- Triangle body: SW(-17,17), NE(17,-17), SE(17,17) — right angle at SE -->
+        <polygon points="-17,17 17,-17 17,17"
+                 fill="inherit" stroke="currentColor" stroke-width="1.5"/>
+        <!-- Reflective "/" hypotenuse (SW→NE) — bright accent, same style as Stomper -->
+        <line x1="-17" y1="17" x2="17" y2="-17"
+              stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
       </symbol>
 
       <!-- ── SPLITTER ──────────────────────────────────────────────────────
-           Reflective sides: NE and SE.
-           Splits the beam into two perpendicular outgoing beams.       -->
+           Northward-pointing triangle.
+           Reflective : NW face (left diagonal) and NE face (right diagonal)
+           Vulnerable : S face (base)
+           Pass-through: E, SE, SW, W (no faces — laser misses)
+           N face (apex): laser going S splits into E + W beams.          -->
       <symbol id="piece-splitter" viewBox="-24 -24 48 48">
-        <polygon points="0,-21 21,0 0,21 -21,0"
+        <!-- Triangle body: apex at top, base at bottom
+             Equilateral inscribed in r=18: apex (0,-18), base (±15.6, 9) -->
+        <polygon points="0,-18 15.6,9 -15.6,9"
                  fill="inherit" stroke="currentColor" stroke-width="1.5"/>
-        <!-- Reflective NE edge -->
-        <line x1="0" y1="-21" x2="21" y2="0"
+        <!-- Reflective NW face (left diagonal) -->
+        <line x1="0" y1="-18" x2="-15.6" y2="9"
               stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
-        <!-- Reflective SE edge -->
-        <line x1="21" y1="0" x2="0" y2="21"
+        <!-- Reflective NE face (right diagonal) -->
+        <line x1="0" y1="-18" x2="15.6" y2="9"
               stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
-        <!-- Faint cross suggesting split output directions -->
-        <line x1="-13" y1="0" x2="13" y2="0"
-              stroke="#88ccff" stroke-width="1.5" stroke-opacity="0.7"/>
-        <line x1="0" y1="-13" x2="0" y2="13"
-              stroke="#88ccff" stroke-width="1.5" stroke-opacity="0.7"/>
       </symbol>
 
     </defs>
